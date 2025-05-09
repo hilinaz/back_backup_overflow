@@ -1,9 +1,37 @@
+buildscript {
+    ext {
+        kotlin_version = '1.9.0'
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:2.48"
+    }
+}
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs += [
+                '-Xopt-in=kotlin.RequiresOptIn',
+                '-Xjvm-default=all',
+                '-Xjsr305=strict'
+        ]
+    }
     namespace 'com.frontendmasters.campusoverflow'
     compileSdk 34
 
@@ -52,6 +80,9 @@ dependencies {
     androidTestImplementation composeBom
 
     // Core Android dependencies
+    implementation 'com.google.dagger:hilt-android:2.48'
+    kapt 'com.google.dagger:hilt-android-compiler:2.48'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.1.0'
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
     implementation 'androidx.activity:activity-compose:1.8.2'
@@ -74,4 +105,4 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
-} 
+}
